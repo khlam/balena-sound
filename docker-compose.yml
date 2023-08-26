@@ -6,7 +6,7 @@ volumes:
 services:
   # Core services
   # -- Required for a fully featured installation of balenaSound
-  # -- Mutiroom services can be removed if not using multiroom mode
+  # -- Multiroom services can be removed if not using multiroom mode
   audio:
     build: ./core/audio
     privileged: true
@@ -48,26 +48,10 @@ services:
     labels:
       io.balena.features.dbus: 1
 
-  airplay:
-    build: ./plugins/airplay
-    restart: on-failure
-    network_mode: host
-    privileged: true
-    labels:
-      io.balena.features.dbus: 1
-
-  spotify:
-    build: ./plugins/spotify
-    restart: on-failure
-    privileged: true
-    network_mode: host
-    volumes:
-      - spotifycache:/var/cache/raspotify
-
   # https://github.com/balenablocks/hostname
   hostname:
     build: ./core/hostname
-    restart: no
+    restart: unless-stopped
     labels:
       io.balena.features.supervisor-api: 1
     environment:
